@@ -10,9 +10,9 @@ APP_VERSION = "1.0.0"
 APP_WIDTH = 1200
 APP_HEIGHT = 800
 
-# 文件路径
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CONTRACT_TEMPLATES_DIR = os.path.join(BASE_DIR, "contract_templates")
+# 文件路径（支持环境变量覆盖，用于便携版打包）
+BASE_DIR = os.environ.get('APP_BASE_DIR', os.path.dirname(os.path.abspath(__file__)))
+CONTRACT_TEMPLATES_DIR = os.environ.get('CONTRACT_TEMPLATES_DIR', os.path.join(BASE_DIR, "contract_templates"))
 EXPORTS_DIR = os.path.join(BASE_DIR, "exports")
 CONFIG_FILE = os.path.join(BASE_DIR, "user_config.json")
 
