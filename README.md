@@ -29,7 +29,7 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/jacket119/legal-contract-drafter.git
+git clone https://github.com/Jatt9520/legal-contract-drafter.git
 cd legal-contract-drafter
 
 # 安装依赖
