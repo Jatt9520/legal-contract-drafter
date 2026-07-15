@@ -54,7 +54,11 @@ def format_amount(value):
 
 
 def number_to_chinese(amount):
-    """数字金额转中文大写"""
+    """数字金额转中文大写
+
+    算法：整数部分从高位到低位逐字符处理，每4位一组（个/万/亿），
+    组内映射千/百/十/个位，中间连续零只保留一个，末尾零去掉，
+    小数部分按角/分处理"""
     digits = ["零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"]
     units = ["", "拾", "佰", "仟"]
     big_units = ["", "万", "亿"]
@@ -71,7 +75,7 @@ def number_to_chinese(amount):
         for i, ch in enumerate(str_num):
             d = int(ch)
             pos = length - i - 1
-            big_unit_idx = # pos // 4 判断当前数字属于哪一组（0=个位组, 1=万位组, 2=亿位组）
+            big_unit_idx = pos // 4  # 判断所属组：0=个位, 1=万位, 2=亿位
             unit_idx = pos % 4
 
             if d != 0:
