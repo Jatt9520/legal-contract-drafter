@@ -54,15 +54,22 @@ def format_amount(value):
 
 
 def number_to_chinese(amount):
-    """数字金额转中文大写
+    """数字金额转中文大写。
 
-    算法：整数部分从高位到低位逐字符处理，每4位一组（个/万/亿），
-    组内映射千/百/十/个位，中间连续零只保留一个，末尾零去掉，
-    小数部分按角/分处理"""
+    算法流程：
+    1. 将整数部分和小数部分分离，小数部分四舍五入到"分"（×100 取整）。
+    2. 整数部分从右往左按每 4 位一组（个/万/亿），组内按 拾/佰/仟 逐位转换。
+       - pos // 4 → 当前位所属的大组索引（0=个位组, 1=万位组, 2=亿位组），
+         用于在组边界插入"万""亿"等大单位。
+       - pos % 4  → 组内位置（0=个, 1=拾, 2=佰, 3=仟），决定后面跟"拾""佰""仟"。
+    3. 连续的零只保留一个"零"，每组末尾的零被 rstrip 去除。
+    4. 小数部分分别提取"角"（十分位）和"分"（百分位），不足两位时补"零"。
+    """
     digits = ["零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"]
     units = ["", "拾", "佰", "仟"]
     big_units = ["", "万", "亿"]
 
+    # 将金额拆分为整数部分和小数部分（精确到分）
     integer_part = int(amount)
     decimal_part = round((amount - integer_part) * 100)
 
@@ -74,29 +81,35 @@ def number_to_chinese(amount):
         length = len(str_num)
         for i, ch in enumerate(str_num):
             d = int(ch)
-            pos = length - i - 1
-            big_unit_idx = pos // 4  # 判断所属组：0=个位, 1=万位, 2=亿位
-            unit_idx = pos % 4
+            pos = length - i - 1  # 从右往左的位置（0=个位）
+            big_unit_idx = pos // 4  # 属于哪一组：0=个位组, 1=万位组, 2=亿位组
+            unit_idx = pos % 4       # 组内位置：0=个, 1=拾, 2=佰, 3=仟
 
             if d != 0:
                 result += digits[d] + units[unit_idx]
             else:
+                # 遇到零时的处理：组边界处插入大单位，否则只保留一个零
                 if unit_idx == 0 and big_unit_idx > 0:
+                    # 该组最低位是零且是万/亿组，去掉末尾多余的零后插入大单位
                     result = result.rstrip("零")
                     result += big_units[big_unit_idx]
                 elif not result.endswith("零"):
+                    # 非组边界的零，只追加一个"零"避免连续重复
                     result += "零"
+        # 去除整数部分末尾多余的零
         result = result.rstrip("零")
 
+    # 处理小数部分：角（十分位）和分（百分位）
     if decimal_part == 0:
         result += "元整"
     else:
-        jiao = decimal_part // 10
-        fen = decimal_part % 10
+        jiao = decimal_part // 10  # 角：整除 10 取商
+        fen = decimal_part % 10    # 分：对 10 取余
         result += "元"
         if jiao > 0:
             result += digits[jiao] + "角"
         elif fen > 0:
+            # 无角有分时，需补"零"（如：壹元零伍分）
             result += "零"
         if fen > 0:
             result += digits[fen] + "分"
