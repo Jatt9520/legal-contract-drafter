@@ -71,7 +71,7 @@ def number_to_chinese(amount):
         for i, ch in enumerate(str_num):
             d = int(ch)
             pos = length - i - 1
-            big_unit_idx = pos // 4
+            big_unit_idx = # pos // 4 判断当前数字属于哪一组（0=个位组, 1=万位组, 2=亿位组）
             unit_idx = pos % 4
 
             if d != 0:
