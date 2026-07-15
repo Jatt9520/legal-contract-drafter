@@ -28,7 +28,7 @@ DEFAULT_EXPORT_FORMAT = "pdf"  # "pdf" 或 "docx"
 PDF_PAGE_SIZE = "A4"
 FONT_NAME = "SimSun"  # 宋体
 
-# 默认合同方信息
+# 默认合同方信息（占位符，实际使用时由用户输入覆盖）
 DEFAULT_PARTY_A = ""  # 甲方默认名称
 DEFAULT_PARTY_B = ""  # 乙方默认名称
 
