@@ -198,6 +198,7 @@ class _SimpleHTMLParser(HTMLParser):
         self.current_cell = None
 
     def handle_starttag(self, tag, attrs):
+        """处理 HTML 开始标签，将标题、段落、表格等元素转换为 Word 文档对象"""
         self.tag_stack.append(tag)
         attrs_dict = dict(attrs)
 
@@ -237,6 +238,7 @@ class _SimpleHTMLParser(HTMLParser):
             pass
 
     def handle_endtag(self, tag):
+        """处理 HTML 结束标签，清理当前段落和表格状态"""
         if self.tag_stack and self.tag_stack[-1] == tag:
             self.tag_stack.pop()
 
@@ -249,6 +251,7 @@ class _SimpleHTMLParser(HTMLParser):
             self.current_row = None
 
     def handle_data(self, data):
+        """处理 HTML 文本内容，将其写入当前段落或表格单元格"""
         text = data.strip()
         if not text:
             return
