@@ -49,6 +49,7 @@ app = Flask(__name__,
 
 
 def get_contract_list():
+    """获取合同类型列表，按分类组织"""
     categories = []
     for cat_name, types in CONTRACT_CATEGORIES.items():
         items = []
@@ -269,6 +270,7 @@ def open_browser():
 
 
 def main():
+    """启动便携版Flask应用，自动打开浏览器"""
     os.makedirs(config.EXPORTS_DIR, exist_ok=True)
     print("=" * 50)
     print("  法律合同拟写助手 v1.0")
