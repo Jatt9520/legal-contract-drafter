@@ -184,6 +184,15 @@ def api_ai_generate():
     )
 
     def generate():
+        """SSE 流式生成器。
+
+        按 Server-Sent Events 协议，每个事件以 "data: " 开头，
+        后跟 JSON 字符串，以两个换行符 "\\n\\n" 结尾。
+        事件类型：
+        - {"chunk": "..."}  : 中间增量文本片段
+        - {"done": true, "title": "...", "content": "..."} : 生成完毕，附带完整内容
+        - {"error": "..."}  : 发生错误
+        """
         try:
             generator = generate_contract(request_obj, stream=True)
             collected = []
