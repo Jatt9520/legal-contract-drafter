@@ -1,0 +1,89 @@
+<h1 class="contract-title">合伙协议</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方：</strong>{{ party_a.name }}</p>
+<p class="party-info">身份证号码/统一社会信用代码：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+
+<p class="party-info"><strong>乙方：</strong>{{ party_b.name }}</p>
+<p class="party-info">身份证号码/统一社会信用代码：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_b.address or '________' }}</p>
+
+<p class="article">根据《中华人民共和国民法典》及相关法律法规的规定，甲乙双方在平等、自愿、诚实信用的原则基础上，经充分协商，就共同出资设立合伙企业事宜达成如下协议：</p>
+
+<h2>第一条 合伙企业基本信息</h2>
+<p class="article">1.1 合伙企业名称：{{ business_name or '________' }}。</p>
+<p class="article">1.2 经营场所：{{ custom_fields.get('business_address', '________') }}。</p>
+<p class="article">1.3 经营范围：{{ business_scope or '________' }}。</p>
+<p class="article">1.4 合伙期限：{{ partnership_period or '________' }}年，自营业执照签发之日起计算。</p>
+
+<h2>第二条 出资方式与金额</h2>
+<p class="article">2.1 甲方出资额为人民币{{ party_a_contribution|format_amount if party_a_contribution else '________元' }}，出资方式为{{ custom_fields.get('contribution_type_a', '货币') }}。</p>
+<p class="article">2.2 乙方出资额为人民币{{ party_b_contribution|format_amount if party_b_contribution else '________元' }}，出资方式为{{ custom_fields.get('contribution_type_b', '货币') }}。</p>
+<p class="article">2.3 出资应在本协议签订后{{ custom_fields.get('contribution_deadline', '30') }}日内缴付至合伙企业账户。</p>
+
+<h2>第三条 利润分配与亏损分担</h2>
+<p class="article">3.1 利润分配比例：甲方{{ profit_ratio_a or '50' }}%，乙方{{ 100 - (profit_ratio_a|int) if profit_ratio_a else '50' }}%。</p>
+<p class="article">3.2 亏损分担比例与利润分配比例相同。</p>
+<p class="article">3.3 利润分配时间：{{ custom_fields.get('profit_distribution_time', '每季度末') }}。</p>
+
+<h2>第四条 合伙事务执行</h2>
+<p class="article">4.1 {{ custom_fields.get('managing_partner', '甲方') }}为执行事务合伙人，负责合伙企业的日常经营管理。</p>
+<p class="article">4.2 以下重大事项须经全体合伙人一致同意：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（1）处分合伙企业的不动产；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（2）转让或处分合伙企业的知识产权；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（3）以合伙企业名义为他人提供担保；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（4）聘任合伙人以外的人员担任合伙企业的经营管理人员；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（5）改变合伙企业的经营范围。</p>
+
+<h2>第五条 合伙人的权利与义务</h2>
+<p class="article">5.1 合伙人享有以下权利：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（1）参与合伙事务的经营管理；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（2）按照约定获取利润分配；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（3）查阅合伙企业的财务会计账簿；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（4）对合伙企业的经营提出建议和质询。</p>
+<p class="article">5.2 合伙人应履行以下义务：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（1）按照约定缴纳出资；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（2）不得从事损害合伙企业利益的活动；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（3）对合伙企业的债务承担无限连带责任；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（4）保守合伙企业的商业秘密。</p>
+
+<h2>第六条 入伙与退伙</h2>
+<p class="article">6.1 新合伙人入伙须经全体合伙人一致同意，并签订书面入伙协议。</p>
+<p class="article">6.2 合伙人退伙应提前{{ custom_fields.get('withdrawal_notice', '60') }}日书面通知其他合伙人。</p>
+<p class="article">6.3 退伙时，退伙人的财产份额按照退伙时合伙企业的财产状况进行结算。</p>
+
+<h2>第七条 合伙企业的解散与清算</h2>
+<p class="article">7.1 合伙企业有下列情形之一的，应当解散：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（1）合伙期限届满，合伙人决定不再续期；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（2）全体合伙人决定解散；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（3）合伙人已不具备法定人数满30天；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（4）合伙协议约定的解散事由出现。</p>
+<p class="article">7.2 合伙企业解散后，由全体合伙人进行清算或委托第三人进行清算。</p>
+
+<h2>第八条 违约责任</h2>
+<p class="article">8.1 合伙人未按约定缴纳出资的，应向其他合伙人支付逾期出资额每日{{ custom_fields.get('late_rate', '0.1%') }}的违约金。</p>
+<p class="article">8.2 合伙人违反竞业禁止义务的，应将其所得收益归合伙企业所有，并赔偿由此造成的损失。</p>
+
+<h2>第九条 争议解决</h2>
+<p class="article">9.1 本协议的签订、履行、解释及争议解决均适用中华人民共和国法律。</p>
+<p class="article">9.2 双方发生争议，应首先协商解决；协商不成的，任何一方有权向有管辖权的人民法院提起诉讼。</p>
+
+{% if additional_terms %}
+<h2>第十条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（签字）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（签字）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

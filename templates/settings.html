@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block nav_settings %}active{% endblock %}
+
+{% block content %}
+<div class="settings-page">
+    <h1>⚙️ 设置</h1>
+
+    <form id="settingsForm" onsubmit="saveSettings(event)">
+        <div class="settings-section">
+            <h2>🤖 AI 服务配置</h2>
+            <p class="section-desc">配置 AI 服务以使用智能合同生成功能</p>
+
+            <div class="form-group">
+                <label for="ai_provider">AI 服务提供商</label>
+                <select id="ai_provider" name="ai_provider">
+                    <option value="openai" {% if user_config.get('ai_provider', 'openai') == 'openai' %}selected{% endif %}>
+                        OpenAI (GPT-4o)
+                    </option>
+                    <option value="anthropic" {% if user_config.get('ai_provider') == 'anthropic' %}selected{% endif %}>
+                        Anthropic (Claude)
+                    </option>
+                </select>
+            </div>
+
+            <div id="openaiSection">
+                <div class="form-group">
+                    <label for="openai_api_key">OpenAI API Key</label>
+                    <input type="password" id="openai_api_key" name="openai_api_key"
+                           placeholder="sk-..."
+                           value="{{ user_config.get('openai_api_key', '') }}">
+                    <small>在 <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI 平台</a> 获取</small>
+                </div>
+                <div class="form-group">
+                    <label for="openai_model">模型</label>
+                    <select id="openai_model" name="openai_model">
+                        <option value="gpt-4o" {% if user_config.get('openai_model', 'gpt-4o') == 'gpt-4o' %}selected{% endif %}>GPT-4o</option>
+                        <option value="gpt-4o-mini" {% if user_config.get('openai_model') == 'gpt-4o-mini' %}selected{% endif %}>GPT-4o Mini</option>
+                        <option value="gpt-4-turbo" {% if user_config.get('openai_model') == 'gpt-4-turbo' %}selected{% endif %}>GPT-4 Turbo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="anthropicSection">
+                <div class="form-group">
+                    <label for="anthropic_api_key">Anthropic API Key</label>
+                    <input type="password" id="anthropic_api_key" name="anthropic_api_key"
+                           placeholder="sk-ant-..."
+                           value="{{ user_config.get('anthropic_api_key', '') }}">
+                    <small>在 <a href="https://console.anthropic.com/" target="_blank">Anthropic 控制台</a> 获取</small>
+                </div>
+                <div class="form-group">
+                    <label for="anthropic_model">模型</label>
+                    <select id="anthropic_model" name="anthropic_model">
+                        <option value="claude-sonnet-4-20250514" {% if user_config.get('anthropic_model', 'claude-sonnet-4-20250514') == 'claude-sonnet-4-20250514' %}selected{% endif %}>Claude Sonnet 4</option>
+                        <option value="claude-haiku-4-5-20251001" {% if user_config.get('anthropic_model') == 'claude-haiku-4-5-20251001' %}selected{% endif %}>Claude Haiku 4.5</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2>📄 导出配置</h2>
+
+            <div class="form-group">
+                <label for="export_format">默认导出格式</label>
+                <select id="export_format" name="export_format">
+                    <option value="pdf" {% if user_config.get('export_format', 'pdf') == 'pdf' %}selected{% endif %}>PDF</option>
+                    <option value="docx" {% if user_config.get('export_format') == 'docx' %}selected{% endif %}>Word (docx)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2>🏢 默认信息</h2>
+            <p class="section-desc">设置常用的甲方/乙方信息，避免重复填写</p>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="default_party_a">默认甲方名称</label>
+                    <input type="text" id="default_party_a" name="default_party_a"
+                           value="{{ user_config.get('default_party_a', '') }}">
+                </div>
+                <div class="form-group">
+                    <label for="default_party_b">默认乙方名称</label>
+                    <input type="text" id="default_party_b" name="default_party_b"
+                           value="{{ user_config.get('default_party_b', '') }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 保存设置</button>
+            <button type="button" class="btn btn-outline" onclick="testAI()">🧪 测试 AI 连接</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('ai_provider').addEventListener('change', function() {
+    const provider = this.value;
+    document.getElementById('openaiSection').style.display = provider === 'openai' ? 'block' : 'none';
+    document.getElementById('anthropicSection').style.display = provider === 'anthropic' ? 'block' : 'none';
+});
+
+// 初始化显示
+document.getElementById('ai_provider').dispatchEvent(new Event('change'));
+
+function saveSettings(event) {
+    event.preventDefault();
+    const form = document.getElementById('settingsForm');
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    fetch('/api/settings', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(result => {
+        if (result.status === 'ok') {
+            showNotification('设置已保存', 'success');
+        }
+    })
+    .catch(err => {
+        showNotification('保存失败：' + err.message, 'error');
+    });
+}
+
+function testAI() {
+    showNotification('正在测试 AI 连接...', 'info');
+    // 发送一个简单的测试请求
+    fetch('/api/contract/ai-generate', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            description: '请用一句话回复：连接成功',
+            language: 'zh'
+        })
+    })
+    .then(res => {
+        if (res.ok) {
+            showNotification('AI 连接成功！', 'success');
+        } else {
+            showNotification('AI 连接失败，请检查 API Key 配置', 'error');
+        }
+    })
+    .catch(err => {
+        showNotification('连接失败：' + err.message, 'error');
+    });
+}
+</script>
+{% endblock %}

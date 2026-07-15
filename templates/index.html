@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>⚖️ 法律合同拟写助手</h1>
+    <p>专业的合同拟写工具，支持模板填充和 AI 智能生成两种模式</p>
+</div>
+
+<div class="mode-toggle">
+    <button class="mode-btn active" data-mode="template" onclick="switchMode('template')">
+        📋 模板模式
+    </button>
+    <button class="mode-btn" data-mode="ai" onclick="switchMode('ai')">
+        🤖 AI 智能模式
+    </button>
+</div>
+
+<!-- 模板模式 -->
+<div id="template-mode" class="mode-section">
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 搜索合同类型..." oninput="filterContracts(this.value)">
+    </div>
+
+    {% for category in categories %}
+    <div class="category-section" data-category="{{ category.name }}">
+        <h2 class="category-title">{{ category.name }}</h2>
+        <div class="contracts-grid">
+            {% for item in category.contracts %}
+            <div class="contract-card" data-type="{{ item.type }}" data-name="{{ item.name }}"
+                 onclick="location.href='/contract/{{ item.type }}/form'">
+                <div class="card-icon">{{ item.icon }}</div>
+                <h3 class="card-title">{{ item.name }}</h3>
+                <p class="card-desc">{{ item.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- AI 模式 -->
+<div id="ai-mode" class="mode-section" style="display: none;">
+    <div class="ai-container">
+        <h2>🤖 AI 智能生成合同</h2>
+        <p class="ai-desc">描述您的合同需求，AI 将为您自动生成专业的合同文本</p>
+
+        <div class="ai-form">
+            <div class="form-group">
+                <label>合同类型（可选）</label>
+                <select id="aiContractType">
+                    <option value="">不限定类型，由 AI 判断</option>
+                    {% for category in categories %}
+                    {% for item in category.contracts %}
+                    <option value="{{ item.type }}">{{ item.name }}</option>
+                    {% endfor %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>甲方名称</label>
+                    <input type="text" id="aiPartyA" placeholder="公司名称或个人姓名">
+                </div>
+                <div class="form-group">
+                    <label>乙方名称</label>
+                    <input type="text" id="aiPartyB" placeholder="公司名称或个人姓名">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>合同需求描述 <span class="required">*</span></label>
+                <textarea id="aiDescription" rows="6"
+                    placeholder="请详细描述您的合同需求，例如：&#10;- 我需要一份软件开发外包合同&#10;- 甲方委托乙方开发一个电商网站&#10;- 开发周期3个月，费用20万元&#10;- 需要包含知识产权归属、验收标准等条款"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>关键条款要点（可选，用逗号分隔）</label>
+                <input type="text" id="aiKeyTerms" placeholder="例如：保密条款, 知识产权归属, 违约责任">
+            </div>
+
+            <button class="btn btn-primary btn-lg" onclick="generateAIContract()">
+                🚀 开始生成
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function switchMode(mode) {
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+    });
+    document.getElementById('template-mode').style.display = mode === 'template' ? 'block' : 'none';
+    document.getElementById('ai-mode').style.display = mode === 'ai' ? 'block' : 'none';
+}
+
+function filterContracts(keyword) {
+    keyword = keyword.toLowerCase();
+    document.querySelectorAll('.contract-card').forEach(card => {
+        const name = card.dataset.name.toLowerCase();
+        const match = name.includes(keyword) || keyword === '';
+        card.style.display = match ? 'block' : 'none';
+    });
+    document.querySelectorAll('.category-section').forEach(section => {
+        const visibleCards = section.querySelectorAll('.contract-card[style="display: block"], .contract-card:not([style])');
+        const hasVisible = Array.from(section.querySelectorAll('.contract-card')).some(c => c.style.display !== 'none');
+        section.style.display = hasVisible ? 'block' : 'none';
+    });
+}
+</script>
+{% endblock %}

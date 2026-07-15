@@ -1,0 +1,75 @@
+<h1 class="contract-title">保密协议</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方（披露方）：</strong>{{ party_a.name }}</p>
+<p class="party-info">统一社会信用代码/身份证号：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+
+<p class="party-info"><strong>乙方（接收方）：</strong>{{ party_b.name }}</p>
+<p class="party-info">统一社会信用代码/身份证号：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_b.address or '________' }}</p>
+
+<p class="article">鉴于甲乙双方拟就{{ purpose or '商业合作' }}事宜进行探讨和合作，双方在合作过程中可能涉及对方的商业秘密和机密信息。为保护双方的合法权益，根据《中华人民共和国民法典》《中华人民共和国反不正当竞争法》等相关法律法规，双方经友好协商，达成如下保密协议：</p>
+
+<h2>第一条 保密信息的定义</h2>
+<p class="article">1.1 保密信息是指一方（披露方）向另一方（接收方）披露的，与披露方业务、技术、经营等相关的一切非公开信息，包括但不限于：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（1）技术信息：技术方案、算法、源代码、数据库、设计图纸、技术文档、专利申请资料等；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（2）商业信息：客户名单、供应商信息、价格策略、营销计划、财务数据、经营计划等；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（3）管理信息：内部管理制度、人事信息、薪酬体系等；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（4）其他经披露方标记为"机密"或"保密"的信息。</p>
+<p class="article">1.2 保密范围：{{ confidential_scope or '上述所有信息' }}。</p>
+
+<h2>第二条 保密义务</h2>
+<p class="article">2.1 接收方应采取合理的安全措施保护保密信息，防止保密信息被泄露、丢失或被盗用。</p>
+<p class="article">2.2 接收方不得向任何第三方披露保密信息，除非获得披露方的书面同意。</p>
+<p class="article">2.3 接收方仅可将保密信息用于{{ purpose or '双方合作' }}之目的，不得用于其他任何目的。</p>
+<p class="article">2.4 接收方应限制接触保密信息的人员范围，仅限于因工作需要必须知悉的人员，并确保该等人员遵守本协议的保密义务。</p>
+
+<h2>第三条 保密期限</h2>
+<p class="article">3.1 本协议的保密期限为{{ nda_period or '3' }}年，自本协议签署之日起计算。</p>
+<p class="article">3.2 保密期限届满后，接收方仍应对在保密期限内知悉的保密信息承担保密义务，直至该等信息进入公共领域。</p>
+
+<h2>第四条 例外情形</h2>
+<p class="article">4.1 以下信息不属于保密信息：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（1）在披露时已为公众所知的信息；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（2）在披露后非因接收方的过错而进入公共领域的信息；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（3）接收方能够证明在披露前已合法拥有的信息；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（4）接收方从有权披露的第三方合法获得的信息；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（5）经披露方书面同意可以披露的信息。</p>
+<p class="article">4.2 如因法律法规或司法、行政机关的要求，接收方必须披露保密信息的，应在法律允许的范围内及时通知披露方，并配合披露方采取保护措施。</p>
+
+<h2>第五条 保密信息的返还与销毁</h2>
+<p class="article">5.1 合作终止或应披露方要求，接收方应在{{ custom_fields.get('return_days', '15') }}日内将所有保密信息（包括副本）归还披露方或按披露方要求予以销毁，并出具书面确认函。</p>
+
+<h2>第六条 违约责任</h2>
+<p class="article">6.1 接收方违反本协议约定的，应向披露方支付违约金人民币{{ penalty_amount|format_amount if penalty_amount else '________元' }}。</p>
+<p class="article">6.2 违约金不足以弥补披露方损失的，接收方还应赔偿披露方因此遭受的全部损失。</p>
+<p class="article">6.3 披露方有权寻求禁令救济或其他衡平法救济，以阻止保密信息的进一步泄露。</p>
+
+<h2>第七条 争议解决</h2>
+<p class="article">7.1 本协议的签订、履行、解释及争议解决均适用中华人民共和国法律。</p>
+<p class="article">7.2 双方发生争议，应首先协商解决；协商不成的，任何一方有权向有管辖权的人民法院提起诉讼。</p>
+
+<h2>第八条 其他条款</h2>
+<p class="article">8.1 本协议自双方签字（盖章）之日起生效。</p>
+<p class="article">8.2 本协议一式两份，甲乙双方各执一份，具有同等法律效力。</p>
+<p class="article">8.3 本协议的修改须经双方书面同意。</p>
+
+{% if additional_terms %}
+<h2>第九条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

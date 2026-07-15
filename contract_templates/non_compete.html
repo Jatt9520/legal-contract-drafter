@@ -1,0 +1,66 @@
+<h1 class="contract-title">竞业限制协议</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方（用人单位）：</strong>{{ party_a.name }}</p>
+<p class="party-info">统一社会信用代码：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+<p class="party-info">法定代表人：{{ party_a.representative or '________' }}</p>
+
+<p class="party-info"><strong>乙方（劳动者）：</strong>{{ party_b.name }}</p>
+<p class="party-info">身份证号码：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">住址：{{ party_b.address or '________' }}</p>
+
+<p class="article">根据《中华人民共和国劳动合同法》及相关法律法规的规定，甲乙双方在平等自愿、协商一致的基础上，就竞业限制事宜达成如下协议：</p>
+
+<h2>第一条 竞业限制范围</h2>
+<p class="article">1.1 乙方在离职后，不得从事以下与甲方有竞争关系的工作或活动：</p>
+<p class="article">{{ restriction_scope or '________' }}</p>
+<p class="article">1.2 乙方不得自行经营或为他人经营与甲方同类的业务。</p>
+<p class="article">1.3 乙方不得到与甲方有竞争关系的单位任职。</p>
+
+<h2>第二条 竞业限制地域</h2>
+<p class="article">2.1 竞业限制的地域范围为：{{ restriction_area or '________' }}。</p>
+
+<h2>第三条 竞业限制期限</h2>
+<p class="article">3.1 竞业限制期限为自乙方离职之日起{{ restriction_period or '24' }}个月。</p>
+
+<h2>第四条 经济补偿</h2>
+<p class="article">4.1 甲方在竞业限制期限内，按月向乙方支付经济补偿金人民币{{ compensation|format_amount if compensation else '________元' }}/月。</p>
+<p class="article">4.2 经济补偿金于每月{{ custom_fields.get('pay_day', '15') }}日前支付至乙方指定账户。</p>
+<p class="article">4.3 甲方逾期支付经济补偿金超过{{ custom_fields.get('overdue_months', '3') }}个月的，乙方有权解除本竞业限制约定。</p>
+
+<h2>第五条 乙方的报告义务</h2>
+<p class="article">5.1 乙方在竞业限制期间，应每{{ custom_fields.get('report_interval', '季度') }}向甲方书面报告其就业情况。</p>
+<p class="article">5.2 乙方变更联系方式或住址的，应在{{ custom_fields.get('notify_days', '5') }}日内书面通知甲方。</p>
+
+<h2>第六条 违约责任</h2>
+<p class="article">6.1 乙方违反竞业限制约定的，应向甲方支付违约金人民币{{ penalty|format_amount if penalty else '________元' }}。</p>
+<p class="article">6.2 乙方支付违约金后，仍应继续履行竞业限制义务。</p>
+<p class="article">6.3 乙方的违约行为给甲方造成损失超过违约金金额的，乙方还应赔偿甲方的差额损失。</p>
+
+<h2>第七条 协议的解除</h2>
+<p class="article">7.1 甲方可以在乙方离职前书面通知乙方解除本竞业限制约定。</p>
+<p class="article">7.2 甲方解除竞业限制约定的，应向乙方额外支付{{ custom_fields.get('additional_months', '3') }}个月的经济补偿金。</p>
+
+<h2>第八条 争议解决</h2>
+<p class="article">8.1 本协议的签订、履行、解释及争议解决均适用中华人民共和国法律。</p>
+<p class="article">8.2 双方发生争议，应首先协商解决；协商不成的，任何一方有权向有管辖权的人民法院提起诉讼。</p>
+
+{% if additional_terms %}
+<h2>第九条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（盖章）：</strong></p>
+        <p>法定代表人/授权代表：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（签字）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

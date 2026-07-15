@@ -1,0 +1,76 @@
+<h1 class="contract-title">委托代理合同</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方（委托方）：</strong>{{ party_a.name }}</p>
+<p class="party-info">身份证号/统一社会信用代码：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_a.phone or '________' }}</p>
+
+<p class="party-info"><strong>乙方（受托方/代理人）：</strong>{{ party_b.name }}</p>
+<p class="party-info">身份证号/统一社会信用代码：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_b.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_b.phone or '________' }}</p>
+
+<p class="article">根据《中华人民共和国民法典》及相关法律法规的规定，甲乙双方在平等、自愿、诚实信用的原则基础上，经协商一致，就甲方委托乙方代理相关事务订立本合同。</p>
+
+<h2>第一条 委托事项</h2>
+<p class="article">1.1 甲方委托乙方代理以下事务：</p>
+<p class="article">{{ agency_scope or '________' }}</p>
+<p class="article">1.2 代理区域：{{ agency_area or '全国' }}。</p>
+
+<h2>第二条 委托期限</h2>
+<p class="article">2.1 委托期限自{{ agency_period_start|format_date if agency_period_start else '________年__月__日' }}起至{{ agency_period_end|format_date if agency_period_end else '________年__月__日' }}止。</p>
+
+<h2>第三条 代理权限</h2>
+<p class="article">3.1 乙方在委托期限内，以甲方的名义行使以下代理权限：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;{{ custom_fields.get('authority_scope', '在委托事项范围内的一切必要行为') }}</p>
+<p class="article">3.2 乙方不得超越代理权限行事。超越代理权限的行为，未经甲方追认，对甲方不发生效力。</p>
+
+<h2>第四条 代理费用与报酬</h2>
+<p class="article">4.1 代理费用/佣金：{{ agency_fee|format_amount if agency_fee else '________' }}。</p>
+<p class="article">4.2 佣金比例：{{ commission_rate or '________' }}%。</p>
+<p class="article">4.3 支付方式：{{ custom_fields.get('payment_method', '按月结算') }}。</p>
+
+<h2>第五条 甲方的权利与义务</h2>
+<p class="article">5.1 甲方有权了解乙方代理事务的进展情况。</p>
+<p class="article">5.2 甲方应向乙方提供代理事务所需的资料和授权文件。</p>
+<p class="article">5.3 甲方应按约定支付代理费用和报酬。</p>
+<p class="article">5.4 甲方对乙方在代理权限内的行为承担法律责任。</p>
+
+<h2>第六条 乙方的权利与义务</h2>
+<p class="article">6.1 乙方有权按约定获取代理费用和报酬。</p>
+<p class="article">6.2 乙方应忠实履行代理职责，维护甲方的合法权益。</p>
+<p class="article">6.3 乙方应及时向甲方报告代理事务的进展情况。</p>
+<p class="article">6.4 乙方不得利用代理地位谋取不正当利益。</p>
+<p class="article">6.5 乙方对在代理过程中知悉的甲方商业秘密负有保密义务。</p>
+
+<h2>第七条 违约责任</h2>
+<p class="article">7.1 乙方未尽代理职责或超越代理权限给甲方造成损失的，应赔偿甲方的直接损失。</p>
+<p class="article">7.2 甲方逾期支付代理费用的，每逾期一日，应向乙方支付逾期金额{{ custom_fields.get('late_rate', '0.5%') }}的违约金。</p>
+
+<h2>第八条 合同解除</h2>
+<p class="article">8.1 甲方可以随时解除委托合同，但应赔偿乙方因此遭受的损失。</p>
+<p class="article">8.2 乙方可以随时辞去委托，但应提前{{ custom_fields.get('notice_days', '30') }}日通知甲方。</p>
+
+<h2>第九条 争议解决</h2>
+<p class="article">9.1 本合同的签订、履行、解释及争议解决均适用中华人民共和国法律。</p>
+<p class="article">9.2 双方发生争议，应首先协商解决；协商不成的，任何一方有权向有管辖权的人民法院提起诉讼。</p>
+
+{% if additional_terms %}
+<h2>第十条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

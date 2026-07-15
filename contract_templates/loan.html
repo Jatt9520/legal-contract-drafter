@@ -1,0 +1,83 @@
+<h1 class="contract-title">民间借贷合同</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方（出借人）：</strong>{{ party_a.name }}</p>
+<p class="party-info">身份证号码：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_a.phone or '________' }}</p>
+
+<p class="party-info"><strong>乙方（借款人）：</strong>{{ party_b.name }}</p>
+<p class="party-info">身份证号码：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_b.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_b.phone or '________' }}</p>
+
+<p class="article">根据《中华人民共和国民法典》及相关法律法规的规定，甲乙双方在平等、自愿、诚实信用的原则基础上，经协商一致，就借款事宜订立本合同。</p>
+
+<h2>第一条 借款金额</h2>
+<p class="article">1.1 甲方同意向乙方出借人民币{{ loan_amount|format_amount if loan_amount else '________元' }}。</p>
+<p class="article">1.2 借款用途：{{ loan_purpose or '________' }}。乙方不得将借款用于非法活动。</p>
+
+<h2>第二条 借款期限</h2>
+<p class="article">2.1 借款期限自{{ loan_start|format_date if loan_start else '________年__月__日' }}起至{{ loan_end|format_date if loan_end else '________年__月__日' }}止。</p>
+<p class="article">2.2 借款期限届满，乙方应一次性偿还全部借款本金及利息。</p>
+
+<h2>第三条 借款利率与利息</h2>
+<p class="article">3.1 借款年利率为{{ interest_rate or '________' }}%。</p>
+<p class="article">3.2 利息计算方式：{{ custom_fields.get('interest_calc', '按实际借款天数计算，日利率=年利率÷360') }}。</p>
+<p class="article">3.3 利息支付方式：{{ custom_fields.get('interest_payment', '随本金一次性支付') }}。</p>
+<p class="article">3.4 本合同约定的利率不超过合同成立时一年期贷款市场报价利率的四倍。</p>
+
+<h2>第四条 还款方式</h2>
+<p class="article">4.1 还款方式：{{ repayment_method or '________' }}。</p>
+<p class="article">4.2 还款账户信息：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;开户行：{{ custom_fields.get('repay_bank', '________') }}</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;账  号：{{ custom_fields.get('repay_account', '________') }}</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;户  名：{{ custom_fields.get('repay_name', party_a.name) }}</p>
+
+<h2>第五条 担保条款</h2>
+<p class="article">5.1 担保方式：{{ guarantee_method or '无担保' }}。</p>
+{% if guarantee_method and guarantee_method != '无担保' %}
+<p class="article">5.2 担保人信息：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;姓名/名称：{{ custom_fields.get('guarantor_name', '________') }}</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;身份证号/统一社会信用代码：{{ custom_fields.get('guarantor_id', '________') }}</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;地址：{{ custom_fields.get('guarantor_address', '________') }}</p>
+<p class="article">5.3 担保范围包括借款本金、利息、违约金及实现债权的费用。</p>
+<p class="article">5.4 担保期限自借款期限届满之日起{{ custom_fields.get('guarantee_period', '2') }}年。</p>
+{% endif %}
+
+<h2>第六条 提前还款</h2>
+<p class="article">6.1 乙方可以提前偿还借款，但应提前{{ custom_fields.get('early_repay_notice', '15') }}日书面通知甲方。</p>
+<p class="article">6.2 提前还款的，利息按实际借款天数计算。</p>
+
+<h2>第七条 违约责任</h2>
+<p class="article">7.1 乙方逾期还款的，应按逾期金额每日{{ custom_fields.get('overdue_rate', '0.05%') }}的标准向甲方支付逾期利息。</p>
+<p class="article">7.2 乙方未按约定用途使用借款的，甲方有权提前收回借款并要求乙方支付违约金。</p>
+<p class="article">7.3 因乙方违约导致甲方采取诉讼或仲裁方式实现债权的，乙方应承担甲方为此支付的律师费、诉讼费、保全费等费用。</p>
+
+<h2>第八条 争议解决</h2>
+<p class="article">8.1 本合同的签订、履行、解释及争议解决均适用中华人民共和国法律。</p>
+<p class="article">8.2 双方发生争议，应首先协商解决；协商不成的，任何一方有权向有管辖权的人民法院提起诉讼。</p>
+
+<h2>第九条 其他约定</h2>
+<p class="article">9.1 本合同自双方签字之日起生效。</p>
+<p class="article">9.2 本合同一式两份，甲乙双方各执一份，具有同等法律效力。</p>
+<p class="article">9.3 本合同的任何修改须经双方书面确认。</p>
+
+{% if additional_terms %}
+<h2>第十条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（出借人签字）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（借款人签字）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

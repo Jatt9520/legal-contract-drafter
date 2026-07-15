@@ -1,0 +1,86 @@
+<h1 class="contract-title">租赁合同</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方（出租方）：</strong>{{ party_a.name }}</p>
+<p class="party-info">身份证号/统一社会信用代码：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_a.phone or '________' }}</p>
+
+<p class="party-info"><strong>乙方（承租方）：</strong>{{ party_b.name }}</p>
+<p class="party-info">身份证号/统一社会信用代码：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_b.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_b.phone or '________' }}</p>
+
+<p class="article">根据《中华人民共和国民法典》及相关法律法规的规定，甲乙双方在平等、自愿、公平、诚实信用的原则基础上，就房屋租赁事宜协商一致，订立本合同。</p>
+
+<h2>第一条 租赁物</h2>
+<p class="article">1.1 租赁物地址：{{ property_address or '________' }}。</p>
+<p class="article">1.2 建筑面积：{{ property_area or '________' }}平方米。</p>
+<p class="article">1.3 房屋用途：{{ property_usage or '________' }}。</p>
+<p class="article">1.4 甲方保证对该房屋拥有合法的出租权，并保证该房屋不存在产权纠纷。</p>
+
+<h2>第二条 租赁期限</h2>
+<p class="article">2.1 租赁期限自{{ lease_start|format_date if lease_start else '________年__月__日' }}起至{{ lease_end|format_date if lease_end else '________年__月__日' }}止。</p>
+<p class="article">2.2 租赁期满，如乙方需要续租，应在租赁期满前{{ custom_fields.get('renewal_notice_days', '30') }}日书面通知甲方，经甲方同意后重新签订租赁合同。</p>
+
+<h2>第三条 租金及支付</h2>
+<p class="article">3.1 月租金为人民币{{ monthly_rent|format_amount if monthly_rent else '________元' }}。</p>
+<p class="article">3.2 租金支付方式：{{ custom_fields.get('rent_payment_method', '按月支付') }}。</p>
+<p class="article">3.3 乙方应于每月{{ payment_day or '1' }}日前支付当月租金。</p>
+<p class="article">3.4 租赁期内，甲方不得擅自提高租金。如需调整租金，双方应另行协商。</p>
+
+<h2>第四条 押金</h2>
+<p class="article">4.1 乙方应于本合同签订之日起{{ custom_fields.get('deposit_days', '3') }}日内向甲方支付押金人民币{{ deposit|format_amount if deposit else '________元' }}。</p>
+<p class="article">4.2 租赁期满或合同解除后，乙方结清相关费用并将房屋完好交还甲方后，甲方应在{{ custom_fields.get('deposit_return_days', '15') }}日内无息退还押金。</p>
+<p class="article">4.3 如乙方存在欠费或损坏房屋设施的情况，甲方有权从押金中扣除相应费用。</p>
+
+<h2>第五条 房屋使用与维护</h2>
+<p class="article">5.1 乙方应合理使用租赁房屋，不得擅自改变房屋结构或用途。</p>
+<p class="article">5.2 乙方如需装修或改造，应事先征得甲方书面同意。</p>
+<p class="article">5.3 日常维修由{{ maintenance_responsibility or '甲方' }}负责。因乙方使用不当造成的损坏，维修费用由乙方承担。</p>
+
+<h2>第六条 费用承担</h2>
+<p class="article">6.1 租赁期间的水费、电费、燃气费、物业管理费等由{{ custom_fields.get('utilities_party', '乙方') }}承担。</p>
+<p class="article">6.2 房屋的房产税、土地使用税等由甲方承担。</p>
+
+<h2>第七条 合同解除</h2>
+<p class="article">7.1 经甲乙双方协商一致，可以解除本合同。</p>
+<p class="article">7.2 甲方有权解除合同的情形：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（1）乙方逾期支付租金超过{{ custom_fields.get('overdue_days', '30') }}日的；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（2）乙方擅自改变房屋用途或转租的；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（3）乙方利用租赁房屋从事违法活动的。</p>
+<p class="article">7.3 乙方有权解除合同的情形：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（1）甲方未按约定提供房屋或房屋不符合约定条件，致使不能实现合同目的的；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（2）房屋存在安全隐患，甲方在合理期限内未予修缮的。</p>
+
+<h2>第八条 违约责任</h2>
+<p class="article">8.1 任何一方违反本合同约定，应向对方支付{{ custom_fields.get('penalty_months', '一') }}个月租金作为违约金。</p>
+<p class="article">8.2 违约金不足以弥补损失的，违约方还应赔偿对方的实际损失。</p>
+
+<h2>第九条 争议解决</h2>
+<p class="article">9.1 本合同的签订、履行、解释及争议解决均适用中华人民共和国法律。</p>
+<p class="article">9.2 双方发生争议，应首先协商解决；协商不成的，任何一方有权向房屋所在地人民法院提起诉讼。</p>
+
+<h2>第十条 其他约定</h2>
+<p class="article">10.1 本合同自双方签字（盖章）之日起生效。</p>
+<p class="article">10.2 本合同一式两份，甲乙双方各执一份，具有同等法律效力。</p>
+<p class="article">10.3 附件：房屋交付清单。</p>
+
+{% if additional_terms %}
+<h2>第十一条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（签字/盖章）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（签字/盖章）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

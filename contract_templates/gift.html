@@ -1,0 +1,65 @@
+<h1 class="contract-title">赠与合同</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方（赠与人）：</strong>{{ party_a.name }}</p>
+<p class="party-info">身份证号码：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+
+<p class="party-info"><strong>乙方（受赠人）：</strong>{{ party_b.name }}</p>
+<p class="party-info">身份证号码：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_b.address or '________' }}</p>
+
+<p class="article">根据《中华人民共和国民法典》及相关法律法规的规定，甲乙双方在平等、自愿的基础上，经协商一致，就赠与事宜订立本合同。</p>
+
+<h2>第一条 赠与标的</h2>
+<p class="article">1.1 甲方自愿将以下财产赠与乙方：</p>
+<p class="article">赠与物：{{ gift_item or '________' }}。</p>
+<p class="article">赠与物描述：{{ gift_description or '________' }}。</p>
+<p class="article">赠与物价值：人民币{{ gift_value|format_amount if gift_value else '________' }}。</p>
+
+<h2>第二条 赠与物的交付</h2>
+<p class="article">2.1 甲方应于{{ delivery_date|format_date if delivery_date else '________年__月__日' }}前将赠与物交付乙方。</p>
+<p class="article">2.2 需要办理过户登记手续的，甲方应协助乙方办理相关手续。</p>
+
+<h2>第三条 附条件赠与</h2>
+{% if conditions %}
+<p class="article">3.1 本赠与附有以下条件：</p>
+<p class="article">{{ conditions }}</p>
+<p class="article">3.2 乙方未履行上述条件的，甲方有权撤销赠与。</p>
+{% else %}
+<p class="article">3.1 本赠与为无条件赠与。</p>
+{% endif %}
+
+<h2>第四条 赠与的撤销</h2>
+<p class="article">4.1 赠与物交付之前，甲方可以撤销赠与。</p>
+<p class="article">4.2 有下列情形之一的，甲方可以撤销赠与：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（1）乙方严重侵害甲方或甲方近亲属的合法权益；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（2）乙方对甲方有扶养义务而不履行；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（3）乙方不履行赠与合同约定的义务。</p>
+
+<h2>第五条 乙方的义务</h2>
+<p class="article">5.1 乙方应妥善保管和使用赠与物。</p>
+<p class="article">5.2 乙方应按约定履行附条件赠与中的义务（如有）。</p>
+
+<h2>第六条 争议解决</h2>
+<p class="article">6.1 本合同的签订、履行、解释及争议解决均适用中华人民共和国法律。</p>
+<p class="article">6.2 双方发生争议，应首先协商解决；协商不成的，任何一方有权向有管辖权的人民法院提起诉讼。</p>
+
+{% if additional_terms %}
+<h2>第七条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（赠与人签字）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（受赠人签字）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

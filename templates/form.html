@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <div class="form-header">
+        <a href="/" class="back-link">← 返回合同列表</a>
+        <h1>{{ type_name }}</h1>
+        <p class="form-desc">{{ description }}</p>
+    </div>
+
+    <form id="contractForm" onsubmit="submitForm(event)">
+        <input type="hidden" name="contract_type" value="{{ contract_type }}">
+
+        <div class="form-section">
+            <h2 class="section-title">📝 基本信息</h2>
+
+            {% set ns = namespace(in_fieldset=false) %}
+            {% for field in fields %}
+                {% if field.name.startswith('party_a_') and not ns.in_fieldset %}
+                    <fieldset class="party-fieldset">
+                        <legend>甲方信息</legend>
+                    {% set ns.in_fieldset = true %}
+                {% elif field.name.startswith('party_b_') and ns.in_fieldset %}
+                    </fieldset>
+                    <fieldset class="party-fieldset">
+                        <legend>乙方信息</legend>
+                    {% set ns.in_fieldset = false %}
+                {% endif %}
+
+                <div class="form-group {% if field.required %}required{% endif %}">
+                    <label for="{{ field.name }}">{{ field.label }}
+                        {% if field.required %}<span class="required">*</span>{% endif %}
+                    </label>
+
+                    {% if field.type == 'text' %}
+                        <input type="text" id="{{ field.name }}" name="{{ field.name }}"
+                               placeholder="{{ field.placeholder or '' }}"
+                               {% if field.required %}required{% endif %}>
+                    {% elif field.type == 'number' %}
+                        <input type="number" id="{{ field.name }}" name="{{ field.name }}"
+                               placeholder="{{ field.placeholder or '' }}"
+                               step="0.01" min="0"
+                               {% if field.required %}required{% endif %}>
+                    {% elif field.type == 'date' %}
+                        <input type="date" id="{{ field.name }}" name="{{ field.name }}"
+                               {% if field.required %}required{% endif %}>
+                    {% elif field.type == 'textarea' %}
+                        <textarea id="{{ field.name }}" name="{{ field.name }}" rows="4"
+                                  placeholder="{{ field.placeholder or '' }}"
+                                  {% if field.required %}required{% endif %}></textarea>
+                    {% elif field.type == 'select' %}
+                        <select id="{{ field.name }}" name="{{ field.name }}"
+                                {% if field.required %}required{% endif %}>
+                            <option value="">请选择</option>
+                            {% for opt in field.options %}
+                            <option value="{{ opt }}">{{ opt }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            {% if ns.in_fieldset %}
+                </fieldset>
+            {% endif %}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                📋 生成合同（模板模式）
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="generateFromFormAI()">
+                🤖 使用 AI 生成
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function submitForm(event) {
+    event.preventDefault();
+    const form = document.getElementById('contractForm');
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    showLoading('正在生成合同...');
+
+    fetch('/api/contract/generate', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(result => {
+        hideLoading();
+        if (result.error) {
+            alert('生成失败：' + result.error);
+            return;
+        }
+        // 跳转到预览页面
+        sessionStorage.setItem('contract_content', result.content);
+        sessionStorage.setItem('contract_title', result.title);
+        sessionStorage.setItem('contract_type', result.contract_type);
+        window.location.href = '/preview';
+    })
+    .catch(err => {
+        hideLoading();
+        alert('请求失败：' + err.message);
+    });
+}
+
+function generateFromFormAI() {
+    const form = document.getElementById('contractForm');
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    // 构建 AI 描述
+    let description = `合同类型：{{ type_name }}\n`;
+    description += `甲方：${data.party_a_name || '未填写'}\n`;
+    description += `乙方：${data.party_b_name || '未填写'}\n`;
+
+    // 添加所有非空字段
+    for (const [key, value] of Object.entries(data)) {
+        if (value && !key.startsWith('party_') && key !== 'contract_type') {
+            description += `${key}：${value}\n`;
+        }
+    }
+
+    sessionStorage.setItem('ai_description', description);
+    sessionStorage.setItem('ai_contract_type', data.contract_type);
+    sessionStorage.setItem('ai_party_a', data.party_a_name || '');
+    sessionStorage.setItem('ai_party_b', data.party_b_name || '');
+    window.location.href = '/?mode=ai';
+}
+</script>
+{% endblock %}

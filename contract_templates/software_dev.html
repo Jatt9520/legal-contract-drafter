@@ -1,0 +1,101 @@
+<h1 class="contract-title">软件开发合同</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方（委托方）：</strong>{{ party_a.name }}</p>
+<p class="party-info">统一社会信用代码：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+<p class="party-info">联系人：{{ custom_fields.get('contact_a', '________') }}</p>
+<p class="party-info">联系电话：{{ party_a.phone or '________' }}</p>
+
+<p class="party-info"><strong>乙方（开发方）：</strong>{{ party_b.name }}</p>
+<p class="party-info">统一社会信用代码：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_b.address or '________' }}</p>
+<p class="party-info">联系人：{{ custom_fields.get('contact_b', '________') }}</p>
+<p class="party-info">联系电话：{{ party_b.phone or '________' }}</p>
+
+<p class="article">根据《中华人民共和国民法典》《计算机软件保护条例》及相关法律法规的规定，甲乙双方在平等、自愿、公平、诚实信用的原则基础上，经协商一致，就甲方委托乙方开发软件系统事宜订立本合同。</p>
+
+<h2>第一条 项目概述</h2>
+<p class="article">1.1 项目名称：{{ project_name or '________' }}。</p>
+<p class="article">1.2 项目描述：{{ project_description or '________' }}。</p>
+<p class="article">1.3 技术要求：{{ tech_stack or '________' }}。</p>
+
+<h2>第二条 开发内容与范围</h2>
+<p class="article">2.1 乙方应按照甲方的需求和本合同的约定，完成以下开发工作：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;{{ custom_fields.get('dev_scope', '按需求文档执行') }}</p>
+<p class="article">2.2 乙方应提交的交付物包括：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（1）可执行的软件系统；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（2）源代码及相关技术文档；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（3）用户操作手册；</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;（4）系统部署文档。</p>
+
+<h2>第三条 项目进度与里程碑</h2>
+<p class="article">3.1 项目开发周期为{{ dev_period or '________' }}天。</p>
+<p class="article">3.2 项目里程碑：</p>
+{% if milestones %}
+<p class="article">{{ milestones }}</p>
+{% else %}
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;第一阶段：需求分析与设计（____天）</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;第二阶段：开发与单元测试（____天）</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;第三阶段：集成测试与修复（____天）</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;第四阶段：部署与验收（____天）</p>
+{% endif %}
+
+<h2>第四条 开发费用与支付</h2>
+<p class="article">4.1 本项目开发费用总额为人民币{{ total_fee|format_amount if total_fee else '________元' }}。</p>
+<p class="article">4.2 付款方式：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;{{ custom_fields.get('payment_schedule', '合同签订后支付30%，中期验收后支付40%，终验合格后支付30%') }}</p>
+
+<h2>第五条 需求变更</h2>
+<p class="article">5.1 甲方如需变更开发需求，应书面通知乙方。</p>
+<p class="article">5.2 需求变更导致工作量增加的，双方应协商确定增加的费用和延长的工期。</p>
+<p class="article">5.3 乙方应评估需求变更的影响，并在收到变更通知后{{ custom_fields.get('change_response_days', '5') }}个工作日内书面回复甲方。</p>
+
+<h2>第六条 验收</h2>
+<p class="article">6.1 验收标准：{{ acceptance_criteria or '按照需求文档和技术规格书进行验收' }}。</p>
+<p class="article">6.2 乙方完成开发后，应书面通知甲方进行验收。</p>
+<p class="article">6.3 甲方应在收到验收通知后{{ custom_fields.get('acceptance_days', '15') }}个工作日内完成验收测试。</p>
+<p class="article">6.4 验收合格的，双方签署验收报告。</p>
+<p class="article">6.5 验收不合格的，乙方应在{{ custom_fields.get('fix_days', '10') }}个工作日内完成修复并重新提交验收。</p>
+
+<h2>第七条 知识产权</h2>
+<p class="article">7.1 本项目开发成果的知识产权归{{ ip_ownership or '甲方' }}所有。</p>
+<p class="article">7.2 乙方保证其开发的软件不侵犯任何第三方的知识产权。</p>
+<p class="article">7.3 乙方在开发过程中使用的自有工具、库和框架的知识产权仍归乙方所有。</p>
+
+<h2>第八条 维护与支持</h2>
+<p class="article">8.1 乙方提供{{ warranty_period or '12' }}个月的免费维护期，自验收合格之日起计算。</p>
+<p class="article">8.2 维护期内，乙方负责修复软件缺陷和提供技术支持。</p>
+<p class="article">8.3 维护期满后，如甲方需要继续维护服务，双方另行签订维护合同。</p>
+
+<h2>第九条 保密条款</h2>
+<p class="article">9.1 双方应对在项目开发过程中知悉的对方商业秘密和技术秘密予以保密。</p>
+<p class="article">9.2 保密期限为合同终止后{{ custom_fields.get('confidential_period', '3') }}年。</p>
+
+<h2>第十条 违约责任</h2>
+<p class="article">10.1 乙方逾期交付的，每逾期一日，应向甲方支付合同总金额{{ custom_fields.get('late_rate', '0.5%') }}的违约金。</p>
+<p class="article">10.2 甲方逾期付款的，每逾期一日，应向乙方支付逾期金额{{ custom_fields.get('late_payment_rate', '0.5%') }}的违约金。</p>
+<p class="article">10.3 任何一方违约给对方造成损失的，应赔偿对方的直接损失。</p>
+
+<h2>第十一条 争议解决</h2>
+<p class="article">11.1 本合同的签订、履行、解释及争议解决均适用中华人民共和国法律。</p>
+<p class="article">11.2 双方发生争议，应首先协商解决；协商不成的，任何一方有权向有管辖权的人民法院提起诉讼。</p>
+
+{% if additional_terms %}
+<h2>第十二条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

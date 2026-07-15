@@ -1,0 +1,64 @@
+<h1 class="contract-title">合资协议</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方：</strong>{{ party_a.name }}</p>
+<p class="party-info">统一社会信用代码/身份证号：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+
+<p class="party-info"><strong>乙方：</strong>{{ party_b.name }}</p>
+<p class="party-info">统一社会信用代码/身份证号：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_b.address or '________' }}</p>
+
+<p class="article">根据《中华人民共和国民法典》及相关法律法规的规定，甲乙双方在平等、自愿、诚实信用的原则基础上，经充分协商，就共同投资设立合资企业事宜达成如下协议：</p>
+
+<h2>第一条 合资项目</h2>
+<p class="article">1.1 项目名称：{{ project_name or '________' }}。</p>
+<p class="article">1.2 项目描述：{{ project_description or '________' }}。</p>
+<p class="article">1.3 经营地点：{{ custom_fields.get('business_address', '________') }}。</p>
+
+<h2>第二条 出资方式与金额</h2>
+<p class="article">2.1 甲方出资额为人民币{{ party_a_investment|format_amount if party_a_investment else '________元' }}，出资方式为{{ custom_fields.get('investment_type_a', '货币') }}。</p>
+<p class="article">2.2 乙方出资额为人民币{{ party_b_investment|format_amount if party_b_investment else '________元' }}，出资方式为{{ custom_fields.get('investment_type_b', '货币') }}。</p>
+<p class="article">2.3 出资应在本协议签订后{{ custom_fields.get('contribution_deadline', '30') }}日内缴付。</p>
+
+<h2>第三条 利润分配与亏损分担</h2>
+<p class="article">3.1 利润分配比例：甲方{{ profit_ratio_a or '50' }}%，乙方{{ 100 - (profit_ratio_a|int) if profit_ratio_a else '50' }}%。</p>
+<p class="article">3.2 亏损分担比例与利润分配比例相同。</p>
+
+<h2>第四条 经营管理</h2>
+<p class="article">4.1 管理架构：{{ management_structure or '双方共同管理' }}。</p>
+<p class="article">4.2 重大决策须经双方一致同意。</p>
+<p class="article">4.3 日常经营由{{ custom_fields.get('managing_party', '双方共同') }}负责。</p>
+
+<h2>第五条 合资期限</h2>
+<p class="article">5.1 合资期限为{{ venture_period or '________' }}年。</p>
+<p class="article">5.2 合资期满，双方可协商续约。</p>
+
+<h2>第六条 退出机制</h2>
+<p class="article">6.1 一方退出合资的，应提前{{ custom_fields.get('exit_notice', '6个月') }}书面通知对方。</p>
+<p class="article">6.2 退出时的财产结算按照退出时的净资产状况进行。</p>
+
+<h2>第七条 违约责任</h2>
+<p class="article">7.1 任何一方违反本协议约定，应赔偿对方的直接损失。</p>
+
+<h2>第八条 争议解决</h2>
+<p class="article">8.1 本协议适用中华人民共和国法律。双方发生争议，应首先协商解决；协商不成的，向有管辖权的人民法院提起诉讼。</p>
+
+{% if additional_terms %}
+<h2>第九条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（签字/盖章）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（签字/盖章）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

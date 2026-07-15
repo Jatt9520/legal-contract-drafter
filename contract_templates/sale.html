@@ -1,0 +1,87 @@
+<h1 class="contract-title">买卖合同</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方（卖方）：</strong>{{ party_a.name }}</p>
+<p class="party-info">统一社会信用代码/身份证号：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_a.phone or '________' }}</p>
+{% if party_a.representative %}
+<p class="party-info">法定代表人：{{ party_a.representative }}</p>
+{% endif %}
+
+<p class="party-info"><strong>乙方（买方）：</strong>{{ party_b.name }}</p>
+<p class="party-info">统一社会信用代码/身份证号：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_b.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_b.phone or '________' }}</p>
+{% if party_b.representative %}
+<p class="party-info">法定代表人：{{ party_b.representative }}</p>
+{% endif %}
+
+<p class="article">根据《中华人民共和国民法典》及相关法律法规的规定，甲乙双方在平等、自愿、公平、诚实信用的原则基础上，就甲方向乙方销售商品事宜，经协商一致，订立本合同。</p>
+
+<h2>第一条 商品信息</h2>
+<p class="article">1.1 商品名称：{{ goods_name or '________' }}</p>
+<p class="article">1.2 规格型号：{{ goods_spec or '________' }}</p>
+<p class="article">1.3 数量：{{ quantity or '________' }}</p>
+<p class="article">1.4 单价：{{ unit_price|format_amount if unit_price else '________元' }}</p>
+<p class="article">1.5 总金额：{{ total_amount|format_amount if total_amount else '________元' }}</p>
+
+<h2>第二条 质量标准</h2>
+<p class="article">2.1 甲方保证所售商品符合国家相关质量标准及双方约定的技术要求。</p>
+<p class="article">2.2 商品质量应符合以下标准：{{ custom_fields.get('quality_standard', '国家标准/行业标准') }}。</p>
+
+<h2>第三条 交付方式</h2>
+<p class="article">3.1 交付日期：{{ delivery_date|format_date if delivery_date else '________年__月__日' }}前。</p>
+<p class="article">3.2 交付地点：{{ delivery_place or '________' }}。</p>
+<p class="article">3.3 运输方式：{{ custom_fields.get('transport_method', '由甲方负责运输') }}。</p>
+<p class="article">3.4 运输费用由{{ custom_fields.get('transport_cost_party', '甲方') }}承担。</p>
+
+<h2>第四条 付款方式</h2>
+<p class="article">4.1 付款方式：{{ payment_method or '________' }}。</p>
+<p class="article">4.2 乙方应在{{ custom_fields.get('payment_deadline', '收到货物后7个工作日内') }}完成付款。</p>
+<p class="article">4.3 甲方收款账户信息：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;开户行：{{ custom_fields.get('bank_name', '________') }}</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;账  号：{{ custom_fields.get('bank_account', '________') }}</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;户  名：{{ custom_fields.get('account_name', party_a.name) }}</p>
+
+<h2>第五条 验收</h2>
+<p class="article">5.1 乙方应在收到商品后{{ custom_fields.get('inspection_days', '3') }}个工作日内完成验收。</p>
+<p class="article">5.2 验收标准以本合同约定的质量标准为准。</p>
+<p class="article">5.3 如发现商品存在质量问题，乙方应在验收期内书面通知甲方。</p>
+
+<h2>第六条 质量保证</h2>
+<p class="article">6.1 质保期限：{{ warranty_period or '自验收合格之日起12个月' }}。</p>
+<p class="article">6.2 在质保期内，因商品自身质量问题导致的故障，甲方应负责免费维修或更换。</p>
+
+<h2>第七条 违约责任</h2>
+<p class="article">7.1 甲方逾期交货的，每逾期一日，应向乙方支付合同总金额{{ custom_fields.get('late_delivery_rate', '0.5%') }}的违约金。</p>
+<p class="article">7.2 乙方逾期付款的，每逾期一日，应向甲方支付逾期金额{{ custom_fields.get('late_payment_rate', '0.5%') }}的违约金。</p>
+<p class="article">7.3 任何一方违约给对方造成损失的，违约方应赔偿对方因此遭受的直接损失。</p>
+
+<h2>第八条 争议解决</h2>
+<p class="article">8.1 本合同的签订、履行、解释及争议解决均适用中华人民共和国法律。</p>
+<p class="article">8.2 双方在履行本合同过程中发生争议，应首先通过友好协商解决；协商不成的，任何一方均有权向{{ custom_fields.get('court', '合同签订地') }}人民法院提起诉讼。</p>
+
+<h2>第九条 其他约定</h2>
+<p class="article">9.1 本合同自双方签字（盖章）之日起生效。</p>
+<p class="article">9.2 本合同一式{{ custom_fields.get('copies', '两') }}份，甲乙双方各执{{ custom_fields.get('copies_each', '一') }}份，具有同等法律效力。</p>
+<p class="article">9.3 本合同未尽事宜，双方可另行签订补充协议，补充协议与本合同具有同等法律效力。</p>
+
+{% if additional_terms %}
+<h2>第十条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

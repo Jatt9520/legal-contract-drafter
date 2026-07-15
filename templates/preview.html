@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="preview-page">
+    <div class="preview-header">
+        <a href="/" class="back-link">← 返回首页</a>
+        <h1 id="previewTitle">合同预览</h1>
+    </div>
+
+    <div class="preview-toolbar">
+        <div class="toolbar-left">
+            <button class="btn btn-outline" onclick="editContract()">✏️ 编辑</button>
+            <button class="btn btn-outline" onclick="window.print()">🖨️ 打印</button>
+        </div>
+        <div class="toolbar-right">
+            <button class="btn btn-primary" onclick="exportContract('pdf')">
+                📄 导出 PDF
+            </button>
+            <button class="btn btn-secondary" onclick="exportContract('docx')">
+                📝 导出 Word
+            </button>
+        </div>
+    </div>
+
+    <div class="preview-content" id="previewContent">
+        <!-- 合同内容将在这里显示 -->
+    </div>
+
+    <!-- 编辑模式 -->
+    <div id="editSection" style="display: none;">
+        <h3>编辑合同内容</h3>
+        <textarea id="editContent" rows="20"></textarea>
+        <div class="edit-actions">
+            <button class="btn btn-primary" onclick="saveEdit()">💾 保存修改</button>
+            <button class="btn btn-outline" onclick="cancelEdit()">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 加载遮罩 -->
+<div id="loadingOverlay" class="loading-overlay" style="display: none;">
+    <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p id="loadingText">正在生成合同...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const content = sessionStorage.getItem('contract_content');
+    const title = sessionStorage.getItem('contract_title');
+
+    if (content) {
+        document.getElementById('previewContent').innerHTML = content;
+        document.getElementById('previewTitle').textContent = title || '合同预览';
+    } else {
+        document.getElementById('previewContent').innerHTML = '<p class="no-content">暂无合同内容，请先生成合同。</p>';
+    }
+});
+
+function editContract() {
+    const content = document.getElementById('previewContent').innerHTML;
+    document.getElementById('editContent').value = content;
+    document.getElementById('previewContent').style.display = 'none';
+    document.getElementById('editSection').style.display = 'block';
+}
+
+function saveEdit() {
+    const newContent = document.getElementById('editContent').value;
+    document.getElementById('previewContent').innerHTML = newContent;
+    sessionStorage.setItem('contract_content', newContent);
+    document.getElementById('previewContent').style.display = 'block';
+    document.getElementById('editSection').style.display = 'none';
+}
+
+function cancelEdit() {
+    document.getElementById('previewContent').style.display = 'block';
+    document.getElementById('editSection').style.display = 'none';
+}
+
+function exportContract(format) {
+    const content = sessionStorage.getItem('contract_content');
+    const title = sessionStorage.getItem('contract_title') || '合同';
+
+    if (!content) {
+        alert('没有可导出的合同内容');
+        return;
+    }
+
+    showLoading('正在导出 ' + (format === 'pdf' ? 'PDF' : 'Word') + ' 文件...');
+
+    fetch('/api/contract/export', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({content, title, format})
+    })
+    .then(res => res.json())
+    .then(result => {
+        hideLoading();
+        if (result.error) {
+            alert('导出失败：' + result.error);
+            return;
+        }
+        // 触发下载
+        window.open('/api/download/' + result.filename, '_blank');
+    })
+    .catch(err => {
+        hideLoading();
+        alert('导出失败：' + err.message);
+    });
+}
+</script>
+{% endblock %}

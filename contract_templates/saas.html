@@ -1,0 +1,90 @@
+<h1 class="contract-title">SaaS 服务协议</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方（服务提供方）：</strong>{{ party_a.name }}</p>
+<p class="party-info">统一社会信用代码：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_a.phone or '________' }}</p>
+
+<p class="party-info"><strong>乙方（客户）：</strong>{{ party_b.name }}</p>
+<p class="party-info">统一社会信用代码：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_b.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_b.phone or '________' }}</p>
+
+<p class="article">根据《中华人民共和国民法典》《中华人民共和国数据安全法》《中华人民共和国个人信息保护法》及相关法律法规的规定，甲乙双方在平等、自愿、公平、诚实信用的原则基础上，经协商一致，就甲方向乙方提供 SaaS 软件服务事宜订立本协议。</p>
+
+<h2>第一条 服务内容</h2>
+<p class="article">1.1 服务名称：{{ service_name or '________' }}。</p>
+<p class="article">1.2 服务描述：{{ service_description or '________' }}。</p>
+<p class="article">1.3 订阅方案：{{ subscription_plan or '________' }}。</p>
+<p class="article">1.4 用户数限制：{{ user_limit or '不限' }}。</p>
+
+<h2>第二条 服务期限</h2>
+<p class="article">2.1 服务期限自{{ subscription_start|format_date if subscription_start else '________年__月__日' }}起至{{ subscription_end|format_date if subscription_end else '________年__月__日' }}止。</p>
+<p class="article">2.2 服务期满前{{ custom_fields.get('renewal_notice', '30') }}日，如任何一方未书面通知对方不续约，本协议自动续期{{ custom_fields.get('auto_renewal_period', '1') }}年。</p>
+
+<h2>第三条 服务费用与支付</h2>
+<p class="article">3.1 服务费用为人民币{{ subscription_fee|format_amount if subscription_fee else '________元' }}/{{ custom_fields.get('fee_period', '年') }}。</p>
+<p class="article">3.2 付款方式：{{ custom_fields.get('payment_method', '银行转账') }}。</p>
+<p class="article">3.3 乙方应在每个计费周期开始前{{ custom_fields.get('payment_before', '15') }}日支付当期费用。</p>
+
+<h2>第四条 服务等级协议（SLA）</h2>
+<p class="article">4.1 甲方承诺服务可用性不低于{{ sla_uptime or '99.9' }}%。</p>
+<p class="article">4.2 计划内维护时间不计入可用性计算。甲方应提前{{ custom_fields.get('maintenance_notice', '48') }}小时通知乙方计划内维护。</p>
+<p class="article">4.3 如服务可用性未达到约定标准，甲方应按以下方式给予补偿：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;{{ custom_fields.get('sla_compensation', '可用性每降低0.1%，补偿当期服务费的5%') }}</p>
+
+<h2>第五条 数据安全与隐私保护</h2>
+<p class="article">5.1 乙方数据的所有权归乙方所有。甲方不得在未经乙方授权的情况下访问、使用或向第三方披露乙方数据。</p>
+<p class="article">5.2 甲方应采取合理的技术和管理措施保护乙方数据的安全，防止数据泄露、丢失或被篡改。</p>
+<p class="article">5.3 数据保留期限：{{ data_retention or '服务期内及服务终止后30天' }}。</p>
+<p class="article">5.4 服务终止后，甲方应在{{ custom_fields.get('data_return_days', '30') }}日内向乙方提供数据导出服务，并在乙方确认后删除所有乙方数据。</p>
+
+<h2>第六条 甲方权利与义务</h2>
+<p class="article">6.1 甲方应按照本协议约定提供稳定、安全的 SaaS 服务。</p>
+<p class="article">6.2 甲方应提供必要的技术支持和客户服务。</p>
+<p class="article">6.3 甲方应定期对系统进行维护和升级，并及时通知乙方。</p>
+<p class="article">6.4 甲方保证其提供的服务不侵犯任何第三方的知识产权。</p>
+
+<h2>第七条 乙方权利与义务</h2>
+<p class="article">7.1 乙方应按照本协议约定支付服务费用。</p>
+<p class="article">7.2 乙方应妥善保管账户信息，因乙方原因导致的账户安全问题由乙方承担责任。</p>
+<p class="article">7.3 乙方不得利用甲方提供的服务从事违法违规活动。</p>
+<p class="article">7.4 乙方不得对服务进行反向工程、反编译或反汇编。</p>
+
+<h2>第八条 知识产权</h2>
+<p class="article">8.1 甲方提供的 SaaS 服务平台及其相关技术的知识产权归甲方所有。</p>
+<p class="article">8.2 乙方使用甲方服务产生的数据和内容的知识产权归乙方所有。</p>
+
+<h2>第九条 违约责任</h2>
+<p class="article">9.1 乙方逾期支付服务费用的，每逾期一日，应向甲方支付逾期金额{{ custom_fields.get('late_rate', '0.5%') }}的违约金。</p>
+<p class="article">9.2 因甲方原因导致服务严重不可用的，乙方有权要求减免相应期间的服务费用。</p>
+<p class="article">9.3 任何一方违约给对方造成损失的，应赔偿对方的直接损失。</p>
+
+<h2>第十条 协议终止</h2>
+<p class="article">10.1 经双方协商一致，可以提前终止本协议。</p>
+<p class="article">10.2 一方提前终止本协议的，应提前{{ custom_fields.get('terminate_notice', '30') }}日书面通知对方。</p>
+<p class="article">10.3 协议终止后，甲方应按照第五条的约定处理乙方数据。</p>
+
+<h2>第十一条 争议解决</h2>
+<p class="article">11.1 本协议的签订、履行、解释及争议解决均适用中华人民共和国法律。</p>
+<p class="article">11.2 双方发生争议，应首先协商解决；协商不成的，任何一方有权向有管辖权的人民法院提起诉讼。</p>
+
+{% if additional_terms %}
+<h2>第十二条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

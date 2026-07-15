@@ -1,0 +1,90 @@
+<h1 class="contract-title">劳动合同</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方（用人单位）：</strong>{{ party_a.name }}</p>
+<p class="party-info">统一社会信用代码：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+<p class="party-info">法定代表人：{{ party_a.representative or '________' }}</p>
+<p class="party-info">联系电话：{{ party_a.phone or '________' }}</p>
+
+<p class="party-info"><strong>乙方（劳动者）：</strong>{{ party_b.name }}</p>
+<p class="party-info">身份证号码：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">住址：{{ party_b.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_b.phone or '________' }}</p>
+
+<p class="article">根据《中华人民共和国劳动法》《中华人民共和国劳动合同法》及相关法律法规的规定，甲乙双方在平等自愿、协商一致的基础上，订立本劳动合同，确立劳动关系。</p>
+
+<h2>第一条 合同期限</h2>
+<p class="article">1.1 合同类型：{{ custom_fields.get('contract_type_option', '固定期限劳动合同') }}。</p>
+<p class="article">1.2 合同期限自{{ contract_start|format_date if contract_start else '________年__月__日' }}起至{{ contract_end|format_date if contract_end else '________年__月__日' }}止。</p>
+{% if probation_period %}
+<p class="article">1.3 试用期：{{ probation_period }}，自入职之日起计算。</p>
+{% endif %}
+
+<h2>第二条 工作内容与工作地点</h2>
+<p class="article">2.1 乙方的工作岗位：{{ position or '________' }}。</p>
+<p class="article">2.2 工作部门：{{ department or '________' }}。</p>
+<p class="article">2.3 工作地点：{{ work_location or '________' }}。</p>
+<p class="article">2.4 甲方根据工作需要及乙方的能力和表现，可以合理调整乙方的工作岗位和工作地点，但应与乙方协商一致。</p>
+
+<h2>第三条 工作时间与休息休假</h2>
+<p class="article">3.1 乙方实行{{ work_hours or '标准工时制' }}。</p>
+<p class="article">3.2 标准工时制下，乙方每日工作时间不超过8小时，每周工作时间不超过40小时。</p>
+<p class="article">3.3 甲方因生产经营需要，经与工会和乙方协商后可以延长工作时间，一般每日不得超过1小时；因特殊原因需要延长工作时间的，在保障乙方身体健康的条件下延长工作时间每日不得超过3小时，每月不得超过36小时。</p>
+<p class="article">3.4 乙方依法享有法定节假日、年休假、婚假、产假等休假权利。年休假天数为{{ annual_leave or '按国家规定执行' }}。</p>
+
+<h2>第四条 劳动报酬</h2>
+<p class="article">4.1 乙方的月工资为人民币{{ salary|format_amount if salary else '________元' }}（税前）。</p>
+<p class="article">4.2 甲方于每月{{ custom_fields.get('pay_day', '15') }}日前以银行转账方式支付乙方上月工资。</p>
+<p class="article">4.3 甲方根据经营状况和乙方工作表现，可以适时调整乙方的工资待遇。</p>
+<p class="article">4.4 试用期工资为人民币{{ custom_fields.get('probation_salary', '按国家规定不低于正式工资的80%') }}。</p>
+
+<h2>第五条 社会保险与福利</h2>
+<p class="article">5.1 甲方依法为乙方缴纳养老保险、医疗保险、失业保险、工伤保险和生育保险。</p>
+<p class="article">5.2 甲方为乙方缴存住房公积金，缴存比例按当地规定执行。</p>
+<p class="article">5.3 甲方为乙方提供的其他福利待遇：{{ custom_fields.get('benefits', '按公司规定执行') }}。</p>
+
+<h2>第六条 劳动保护与劳动条件</h2>
+<p class="article">6.1 甲方为乙方提供符合国家规定的劳动安全卫生条件和必要的劳动防护用品。</p>
+<p class="article">6.2 甲方对乙方进行劳动安全卫生教育和培训。</p>
+
+<h2>第七条 保密与竞业限制</h2>
+<p class="article">7.1 乙方在合同期内及离职后，应对甲方的商业秘密和知识产权相关事项保密。</p>
+<p class="article">7.2 如双方另行签订保密协议或竞业限制协议，以该等协议的约定为准。</p>
+
+<h2>第八条 合同的变更、解除与终止</h2>
+<p class="article">8.1 经甲乙双方协商一致，可以变更本合同的相关内容。</p>
+<p class="article">8.2 甲乙双方解除或终止劳动合同，应按照《劳动合同法》的相关规定执行。</p>
+<p class="article">8.3 甲方单方解除劳动合同，应依法向乙方支付经济补偿金。</p>
+<p class="article">8.4 乙方提前解除劳动合同，应提前{{ custom_fields.get('notice_days', '30') }}日以书面形式通知甲方。</p>
+
+<h2>第九条 违约责任</h2>
+<p class="article">9.1 甲乙双方应严格履行本合同，任何一方违反合同约定，应承担相应的违约责任。</p>
+<p class="article">9.2 乙方违反保密义务或竞业限制约定的，应向甲方支付违约金人民币{{ custom_fields.get('penalty_amount', '________') }}元，并赔偿甲方因此遭受的损失。</p>
+
+<h2>第十条 争议解决</h2>
+<p class="article">10.1 甲乙双方因履行本合同发生争议，应首先协商解决；协商不成的，可以向劳动争议调解委员会申请调解；调解不成的，可以向劳动争议仲裁委员会申请仲裁。</p>
+<p class="article">10.2 对仲裁裁决不服的，可以依法向人民法院提起诉讼。</p>
+
+<h2>第十一条 其他约定</h2>
+<p class="article">11.1 本合同未尽事宜，按照国家及地方相关法律法规执行。</p>
+<p class="article">11.2 本合同一式两份，甲乙双方各执一份，自双方签字（盖章）之日起生效。</p>
+
+{% if additional_terms %}
+<h2>第十二条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（盖章）：</strong></p>
+        <p>法定代表人/授权代表：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（签字）：</strong></p>
+        <p>________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+<h1 class="contract-title">服务合同</h1>
+
+<p class="party-info">合同编号：{{ custom_fields.get('contract_number', '________') }}</p>
+
+<p class="party-info"><strong>甲方（委托方）：</strong>{{ party_a.name }}</p>
+<p class="party-info">统一社会信用代码/身份证号：{{ party_a.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_a.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_a.phone or '________' }}</p>
+
+<p class="party-info"><strong>乙方（服务方）：</strong>{{ party_b.name }}</p>
+<p class="party-info">统一社会信用代码/身份证号：{{ party_b.id_number or '________' }}</p>
+<p class="party-info">地址：{{ party_b.address or '________' }}</p>
+<p class="party-info">联系电话：{{ party_b.phone or '________' }}</p>
+
+<p class="article">根据《中华人民共和国民法典》及相关法律法规的规定，甲乙双方在平等、自愿、公平、诚实信用的原则基础上，经协商一致，就乙方为甲方提供服务事宜订立本合同。</p>
+
+<h2>第一条 服务内容</h2>
+<p class="article">1.1 乙方为甲方提供以下服务：</p>
+<p class="article">{{ service_content or '________' }}</p>
+<p class="article">1.2 服务标准：{{ service_standard or '按照行业标准及双方约定执行' }}。</p>
+<p class="article">1.3 乙方应按照甲方的合理要求和行业规范提供服务。</p>
+
+<h2>第二条 服务期限</h2>
+<p class="article">2.1 服务期限自{{ service_period_start|format_date if service_period_start else '________年__月__日' }}起至{{ service_period_end|format_date if service_period_end else '________年__月__日' }}止。</p>
+<p class="article">2.2 服务期满，如需续约，双方应另行协商签订新的服务合同。</p>
+
+<h2>第三条 服务费用及支付</h2>
+<p class="article">3.1 服务费用总额为人民币{{ service_fee|format_amount if service_fee else '________元' }}。</p>
+<p class="article">3.2 支付方式：{{ payment_method or '________' }}。</p>
+<p class="article">3.3 甲方应按照以下约定支付服务费用：</p>
+<p class="article">&nbsp;&nbsp;&nbsp;&nbsp;{{ custom_fields.get('payment_schedule', '按合同约定的时间节点支付') }}</p>
+
+<h2>第四条 甲方权利与义务</h2>
+<p class="article">4.1 甲方有权对乙方的服务质量进行监督和检查。</p>
+<p class="article">4.2 甲方应按时支付服务费用。</p>
+<p class="article">4.3 甲方应向乙方提供必要的工作条件和相关资料。</p>
+<p class="article">4.4 甲方对乙方提交的工作成果应及时进行确认或提出修改意见。</p>
+
+<h2>第五条 乙方权利与义务</h2>
+<p class="article">5.1 乙方有权按照合同约定收取服务费用。</p>
+<p class="article">5.2 乙方应按照合同约定的服务内容和标准提供服务。</p>
+<p class="article">5.3 乙方应保证服务人员具备相应的资质和能力。</p>
+<p class="article">5.4 乙方不得将本合同项下的服务转包给第三方，除非经甲方书面同意。</p>
+<p class="article">5.5 乙方应对在服务过程中知悉的甲方商业秘密予以保密。</p>
+
+<h2>第六条 验收</h2>
+<p class="article">6.1 乙方完成服务后，应书面通知甲方进行验收。</p>
+<p class="article">6.2 甲方应在收到验收通知后{{ custom_fields.get('acceptance_days', '7') }}个工作日内完成验收。</p>
+<p class="article">6.3 验收合格的，甲方应出具书面验收确认。</p>
+<p class="article">6.4 验收不合格的，乙方应按甲方要求进行整改，整改费用由乙方承担。</p>
+
+<h2>第七条 知识产权</h2>
+<p class="article">7.1 乙方在提供服务过程中产生的知识产权归{{ custom_fields.get('ip_owner', '甲方') }}所有。</p>
+<p class="article">7.2 乙方保证其提供的服务成果不侵犯任何第三方的知识产权。</p>
+
+<h2>第八条 保密条款</h2>
+<p class="article">8.1 双方应对在合同签订和履行过程中知悉的对方商业秘密予以保密。</p>
+<p class="article">8.2 保密期限为合同终止后{{ custom_fields.get('confidential_period', '2') }}年。</p>
+
+<h2>第九条 违约责任</h2>
+<p class="article">9.1 乙方未按约定提供服务或服务质量不符合要求的，甲方有权要求乙方限期整改；逾期未整改或整改后仍不符合要求的，甲方有权解除合同并要求乙方退还已支付的服务费用。</p>
+<p class="article">9.2 甲方逾期支付服务费用的，每逾期一日，应向乙方支付逾期金额{{ custom_fields.get('late_payment_rate', '0.5%') }}的违约金。</p>
+<p class="article">9.3 任何一方违约给对方造成损失的，应赔偿对方的直接损失。</p>
+
+<h2>第十条 合同解除</h2>
+<p class="article">10.1 经双方协商一致，可以解除本合同。</p>
+<p class="article">10.2 一方提前解除合同的，应提前{{ custom_fields.get('terminate_notice_days', '30') }}日书面通知对方。</p>
+
+<h2>第十一条 争议解决</h2>
+<p class="article">11.1 本合同的签订、履行、解释及争议解决均适用中华人民共和国法律。</p>
+<p class="article">11.2 双方发生争议，应首先协商解决；协商不成的，任何一方有权向有管辖权的人民法院提起诉讼。</p>
+
+<h2>第十二条 其他约定</h2>
+<p class="article">12.1 本合同自双方签字（盖章）之日起生效。</p>
+<p class="article">12.2 本合同一式两份，甲乙双方各执一份，具有同等法律效力。</p>
+
+{% if additional_terms %}
+<h2>第十三条 补充条款</h2>
+<p class="article">{{ additional_terms }}</p>
+{% endif %}
+
+<div style="margin-top: 60px; display: flex; justify-content: space-between;">
+    <div style="width: 45%;">
+        <p><strong>甲方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+    <div style="width: 45%;">
+        <p><strong>乙方（盖章）：</strong></p>
+        <p>授权代表签字：________________</p>
+        <p>日期：{{ contract_date_cn }}</p>
+    </div>
+</div>
