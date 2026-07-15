@@ -49,7 +49,11 @@ app = Flask(__name__,
 
 
 def get_contract_list():
-    """获取合同类型列表，按分类组织"""
+    """获取合同类型列表，按分类组织。
+
+    遍历 CONTRACT_CATEGORIES 字典，将每个分类下的合同类型
+    组装为包含 type、name、description、icon 的列表，返回所有分类。
+    """
     categories = []
     for cat_name, types in CONTRACT_CATEGORIES.items():
         items = []
@@ -202,6 +206,15 @@ def api_ai_generate():
     )
 
     def generate():
+        """SSE 流式生成器。
+
+        按 Server-Sent Events 协议，每个事件以 "data: " 开头，
+        后跟 JSON 字符串，以两个换行符 "\\n\\n" 结尾。
+        事件类型：
+        - {"chunk": "..."}  : 中间增量文本片段
+        - {"done": true, "title": "...", "content": "..."} : 生成完毕，附带完整内容
+        - {"error": "..."}  : 发生错误
+        """
         try:
             generator = generate_contract(request_obj, stream=True)
             collected = []
@@ -270,7 +283,13 @@ def open_browser():
 
 
 def main():
-    """启动便携版Flask应用，自动打开浏览器"""
+    """启动便携版 Flask 应用。
+
+    1. 创建导出目录
+    2. 打印启动横幅
+    3. 在后台守护线程中延迟打开浏览器
+    4. 启动 Flask 开发服务器（监听 127.0.0.1:5000）
+    """
     os.makedirs(config.EXPORTS_DIR, exist_ok=True)
     print("=" * 50)
     print("  法律合同拟写助手 v1.0")
