@@ -229,12 +229,12 @@ class _SimpleHTMLParser(HTMLParser):
                 cell_idx = len(self.current_row.cells)
                 self.current_cell = self.current_row.cells[cell_idx - 1] if cell_idx > 0 else None
                 if self.current_cell is None:
-                    # 需要先添加列
+                    # TODO: 后续版本实现表格列渲染
                     pass
         elif tag == "strong" or tag == "b":
-            pass  # 标记为粗体
+            pass
         elif tag == "em" or tag == "i":
-            pass  # 标记为斜体
+            pass
 
     def handle_endtag(self, tag):
         if self.tag_stack and self.tag_stack[-1] == tag:
